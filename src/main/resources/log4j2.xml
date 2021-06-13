@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+	<!-- GENERAL PROPERTIES -->
+	<Properties>	
+		<Property name="logsDir">/var/logs</Property>
+		<Property name="applicationName">${bundle:application:spring.application.name}</Property>
+		<Property name="logPattern">
+			<!-- [YYYY-MM-dd HH:mm:ss,SSS] [applicationName] [thread] [logLevel] - [Class:Line] - message -->
+			[%d{ISO8601DateFormat}] [${applicationName}] [%style{%t}{black}] [%highlight{%p}] - %style{%C:%L}{bright,yellow} - %msg%n%throwable
+		</Property>		
+	</Properties>
+
+	<!-- APPENDERS -->
+	<Appenders>
+	
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="${logPattern}"/>
+		</Console>
+
+		<!-- INFO ROLLING FILE -->
+		<RollingFile name="infoLogFile" fileName="${logsDir}/${applicationName}.log" 
+			filePattern="${logsDir}/${date:yyyy-MM}/${applicationName}_%d{yyy-MM-dd}.log.gz">
+			
+			<PatternLayout>
+				<pattern>${logPattern}</pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="100MB" />		
+			</Policies>
+		</RollingFile>
+		
+		<!-- ERROR ROLLING FILE -->
+		<RollingFile name="errorLogFile" fileName="${logsDir}/${applicationName}-error.log" 
+			filePattern="${logsDir}/${date:yyyy-MM}/${applicationName}_%d{yyy-MM-dd}-error.log.gz">
+			
+			<PatternLayout>
+				<pattern>${logPattern}</pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="100MB" />			
+			</Policies>
+		</RollingFile>
+	</Appenders>
+
+	<!-- LOGGERS -->	
+	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="infoLogFile" />
+			<AppenderRef ref="errorLogFile" level="error"/>
+		</Root>
+	</Loggers>
+
+</Configuration>
