@@ -1,1 +1,1 @@
-web: java -jar -Dspring.profiles.active=prodtarget/telephone-service.jar
+web: java -jar -Dspring.profiles.active=prod target/telephone-service.jar
