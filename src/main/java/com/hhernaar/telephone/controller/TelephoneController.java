@@ -25,9 +25,11 @@ import com.hhernaar.telephone.service.TelephoneService;
 import com.hhernaar.telephone.util.MapperUtil;
 import com.hhernaar.telephone.util.StatusResponse;
 import com.hhernaar.telephone.util.ValidatorUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/telephone")
+@Tag(name = "TELEPHONE")
 public class TelephoneController {
 
   @Autowired
